@@ -6,6 +6,17 @@ const app = express();
 // middleware
 app.use(express.json());
 
+// must include'next' function at the end of each middleware app in the MW stack
+app.use((req, res, next) => {
+    console.log('Hello from the middleware stack!');
+    next();
+});
+
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString();
+    next();
+})
+
 const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
@@ -14,8 +25,10 @@ const tours = JSON.parse(
 // GET
 // Get list of tour info
 const getAllTours = (req, res) => {
+    console.log(req.requestTime);
     res.status(200).json({
         status: 'success',
+        requestedAt: req.requestTime,
         results: tours.length,
         data: {
             tours
@@ -23,7 +36,7 @@ const getAllTours = (req, res) => {
     })
 };
 
-app.get('/api/v1/tours', getAllTours);
+
 
 // Get tour info by id
 const getTourById = (req, res) => {
@@ -45,7 +58,7 @@ const getTourById = (req, res) => {
     })
 };
 
-app.get('/api/v1/tours/:id', getTourById);
+
 
 // POST
 // Add new tour
@@ -66,8 +79,6 @@ const addNewTour = (req, res) => {
     })
 };
 
-app.post('/api/v1/tours', addNewTour);
-
 // PATCH
 const updateTour = (req, res) => {
     if (req.params.id * 1 > tours.length){
@@ -84,8 +95,6 @@ const updateTour = (req, res) => {
     });
 };
 
-app.patch('/api/v1/tours/:id', updateTour);
-
 
 // DELETE
 const deleteTour = (req, res) => {
@@ -101,7 +110,14 @@ const deleteTour = (req, res) => {
     });
 };
 
-app.delete('/api/v1/tours/:id', deleteTour);
+// app.get('/api/v1/tours', getAllTours);
+// get.post('/api/v1/tours', addNewTour);
+// app.get('/api/v1/tours/:id', getTourById);
+// app.patch('/api/v1/tours/:id', updateTour);
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getAllTours).post(addNewTour);
+app.route('/api/v1/tours/:id').get(getTourById).patch(updateTour).delete(deleteTour);
 
 const port = 3000;
 app.listen(port, () => {
