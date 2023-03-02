@@ -1,9 +1,15 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
-// middleware
+
+
+
+// 1) MIDDLEWARES
+app.use(morgan('dev'));
+
 app.use(express.json());
 
 // must include'next' function at the end of each middleware app in the MW stack
@@ -21,7 +27,11 @@ const tours = JSON.parse(
     fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-// Route handlers
+
+
+
+
+// 2) Route handlers
 // GET
 // Get list of tour info
 const getAllTours = (req, res) => {
@@ -35,8 +45,6 @@ const getAllTours = (req, res) => {
         }
     })
 };
-
-
 
 // Get tour info by id
 const getTourById = (req, res) => {
@@ -57,8 +65,6 @@ const getTourById = (req, res) => {
         }
     })
 };
-
-
 
 // POST
 // Add new tour
@@ -95,7 +101,6 @@ const updateTour = (req, res) => {
     });
 };
 
-
 // DELETE
 const deleteTour = (req, res) => {
     if (req.params.id * 1 > tours.length){
@@ -110,6 +115,11 @@ const deleteTour = (req, res) => {
     });
 };
 
+
+
+
+// 3) ROUTES
+
 // app.get('/api/v1/tours', getAllTours);
 // get.post('/api/v1/tours', addNewTour);
 // app.get('/api/v1/tours/:id', getTourById);
@@ -119,6 +129,10 @@ const deleteTour = (req, res) => {
 app.route('/api/v1/tours').get(getAllTours).post(addNewTour);
 app.route('/api/v1/tours/:id').get(getTourById).patch(updateTour).delete(deleteTour);
 
+
+
+
+// 4) SERVER START
 const port = 3000;
 app.listen(port, () => {
     console.log(`App running on port ${port}`);
