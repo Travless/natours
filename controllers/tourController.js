@@ -15,6 +15,16 @@ exports.checkID = (req, res, next, val) => {
     next();
 };
 
+exports.checkBody = (req, res, next, val) => {
+    if(!req.body.name || !req.body.price){
+        return res.status(404).json({
+            status: 'fail',
+            message: 'No name or price for tour exist.'
+        });
+    }
+    next();
+}
+
 
 // GET
 // Get list of tour info
