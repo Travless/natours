@@ -26,30 +26,9 @@ app.use((req, res, next) => {
 })
 
 
-
-
-// 2) Route handlers
-
-
-
-
-
-// 3) ROUTES
-
-// const tourRouter = express.Router();
-// const userRouter = express.Router();
-
-// tourRouter.route('/').get(getAllTours).post(addNewTour);
-// tourRouter.route('/:id').get(getTourById).patch(updateTour).delete(deleteTour);
-
-// userRouter.route('/').get(getAllUsers).post(createUser);
-// userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+// 2) ROUTES
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-// 4) SERVER START
-const port = 3000;
-app.listen(port, () => {
-    console.log(`App running on port ${port}`);
-});
+module.exports = app;
