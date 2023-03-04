@@ -1,4 +1,7 @@
+/* eslint-disable import/no-useless-path-segments */
+// eslint-disable-next-line no-unused-vars
 const fs = require('fs');
+// eslint-disable-next-line no-unused-vars
 const Tour = require('./../models/tourModel');
 
 // const tours = JSON.parse(
@@ -16,15 +19,15 @@ const Tour = require('./../models/tourModel');
 //   next();
 // };
 
-exports.checkBody = (req, res, next, val) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No name or price for tour exist.',
-    });
-  }
-  next();
-};
+// exports.checkBody = (req, res, next, val) => {
+//   if (!req.body.name || !req.body.price) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'No name or price for tour exist.',
+//     });
+//   }
+//   next();
+// };
 
 // GET
 // Get list of tour info
@@ -54,13 +57,22 @@ exports.getTourById = (req, res) => {
 
 // POST
 // Add new tour
-exports.addNewTour = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   tour: newTour,
-    // },
-  });
+exports.addNewTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data sent',
+    });
+  }
   // const newId = tours[tours.length - 1].id + 1;
   // // eslint-disable-next-line node/no-unsupported-features/es-syntax
   // const newTour = { id: newId, ...req.body };
