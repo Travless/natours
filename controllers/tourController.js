@@ -130,9 +130,18 @@ exports.updateTour = async (req, res) => {
 };
 
 // DELETE
-exports.deleteTour = (req, res) => {
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
+exports.deleteTour = async (req, res) => {
+  try {
+    // When data is deleted, you don't need to store a response, since there is no response being returned to the client
+    await Tour.findOneAndDelete(req.params.id);
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
