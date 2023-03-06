@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 /* eslint-disable import/no-useless-path-segments */
 // eslint-disable-next-line no-unused-vars
 const fs = require('fs');
@@ -33,8 +34,25 @@ const Tour = require('./../models/tourModel');
 // Get list of tour info
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    // BUILD QUERY
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
 
+    console.log(req.query, queryObj);
+
+    const query = Tour.find(queryObj);
+
+    // const query = await Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+
+    // EXECUTE QUERY
+    const tours = await query;
+
+    // SEND QUERY
     res.status(200).json({
       status: 'success',
       results: tours.length,
