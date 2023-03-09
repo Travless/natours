@@ -43,7 +43,16 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a price'],
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function (val) {
+          // this only points to current doc on NEW document creation
+          return val < this.price; // ex 100 < 200 returns truwe, 300 < 200 returns false
+        },
+        message: 'Price discount ({VALUE}) should be below regular price.',
+      },
+    },
     summary: {
       type: String,
       trim: true,
@@ -81,23 +90,12 @@ tourSchema.virtual('durationWeeks').get(function () {
 // Document Middleware w/ Mongoose
 // Hook (.save(), .create(), etc)
 
-// Pre-Hook (runs before .save() and .create())
+// Pre-Hook (only runs before .save() and .create())
 tourSchema.pre('save', function (next) {
   // Creates slug for tour schema
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-
-// tourSchema.pre('save', function (next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// // Post-Hook (runs after .save() and .create())
-// tourSchema.post('save', (doc, next) {
-//   console.log(doc);
-//   next();
-// });
 
 // Query Middleware
 // Pre-Hook
