@@ -66,11 +66,24 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
+// Document Middleware w/ Mongoose
+// Hook (.save(), .create(), etc)
 
-// Pre-Hook / Document Middleware w/ Mongoose (runs before .save() and .create())
+// Pre-Hook (runs before .save() and .create())
 tourSchema.pre('save', function (next) {
   // Creates slug for tour schema
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+tourSchema.pre('save', function (next) {
+  console.log('Will save document...');
+  next();
+});
+
+// Post-Hook (runs after .save() and .create())
+tourSchema.post('save', (doc, next) {
+  console.log(doc);
   next();
 });
 
