@@ -14,12 +14,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 app.use(express.static(`${this._router}/public`));
 
-// must include'next' function at the end of each middleware app in the MW stack
-app.use((req, res, next) => {
-  console.log('Hello from the middleware stack!');
-  next();
-});
-
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
