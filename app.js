@@ -33,7 +33,8 @@ app.all('*', (req, res, next) => {
   // });
   // next();
 
-  const err = new Error(`Can't find ${req.originalUrl}.`);
+  // test error
+  const err = new Error(`Can't find ${req.originalUrl} on this server.`);
   err.status = 'fail';
   err.statusCode = 404;
 
