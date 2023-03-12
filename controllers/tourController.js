@@ -9,6 +9,7 @@ const catchAsync = require('./../utils/catchAsync');
 const Tour = require('./../models/tourModel');
 
 const APIFeatures = require('./../utils/apiFeatures');
+const AppError = require('../utils/appError');
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -41,9 +42,13 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 exports.getTourById = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
   // Tour.findOne({_id: req.params.id})
+  if(!tour) {
+    return next(new AppError('No tour found with that ID', 404));
+  }
+
   res.status(200).json({
     status: 'success',
-    ssata: {
+    data: {
       tour,
     },
   });
@@ -63,10 +68,15 @@ exports.addNewTour = catchAsync(async (req, res, next) => {
 
 // PATCH
 exports.updateTour = catchAsync(async (req, res, next) => {
+
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
+
+  if(!tour) {
+    return next(new AppError('No tour found with that ID', 404));
+  }
 
   res.status(200).json({
     status: 'success',
@@ -79,7 +89,12 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 // DELETE
 exports.deleteTour = catchAsync(async (req, res, next) => {
   // When data is deleted, you don't need to store a response, since there is no response being returned to the client
-  await Tour.findByIdAndDelete(req.params.id);
+  const tour = await Tour.findByIdAndDelete(req.params.id);
+  
+  if(!tour) {
+    return next(new AppError('No tour found with that ID', 404));
+  }
+
   res.status(204).json({
     status: 'success',
     data: null,
