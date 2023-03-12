@@ -1,6 +1,7 @@
 // Global error class
-class appError extends Error {
+class AppError extends Error {
   constructor(message, statusCode) {
+    // passing message to super basically already sets message to this.message
     super(message);
 
     this.statusCode = statusCode;
@@ -13,4 +14,4 @@ class appError extends Error {
   }
 }
 
-module.exports = appError;
+module.exports = AppError;
