@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+// const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -10,7 +11,7 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       maxlength: [40, 'A tour name must have less or equal than 40 characters'],
-      minlength: [10, 'A tourname must have more or equal than 10 characters'],
+      minlength: [10, 'A tour name must have more or equal than 10 characters'],
     },
     slug: String,
     duration: {
@@ -106,7 +107,7 @@ tourSchema.pre(/^find/, function (next) {
 });
 
 // Post-Hook
-tourSchema.post(/^find/, function (docs, next) {
+tourSchema.post(/^find/, (docs, next) => {
   next();
 });
 
