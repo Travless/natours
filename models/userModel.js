@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
       10,
       "A user's password must be at least 10 or more characters.",
     ],
+    select: false,
   },
   passwordConfirm: {
     type: String,
