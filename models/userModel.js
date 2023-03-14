@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'A user must have a name.'],
-    unique: true,
     maxLength: [
       40,
       "a user's name must be less than or equal to 40 characters",
@@ -31,6 +30,14 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     required: [true, 'You must confirm your provided password.'],
+    validate: {
+      // Use standard function format, not arrow function, so you have access to this keyword
+      // This validator only works on CREAT and SAVE!
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: 'Passwords are not the same',
+    },
   },
 });
 
