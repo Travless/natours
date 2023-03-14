@@ -60,7 +60,10 @@ userSchema.pre('save', async function (next) {
 
 // check if provided password is the same as encrypted password via instance method
 // instance method is available on all user documents
-userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
