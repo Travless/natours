@@ -58,6 +58,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// check if provided password is the same as encrypted password via instance method
+// instance method is available on all user documents
+userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
