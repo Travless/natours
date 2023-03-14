@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
@@ -39,6 +40,20 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same',
     },
   },
+});
+
+// Encryption middleware
+// Happens between receiving the data and when it presisted to the database (prehook)
+userSchema.pre('save', async function (next) {
+  // Only run ths function if password if password was actually modified
+  if (!this.isModified('password')) return next();
+
+  // bycrypt creates hash based on cost parma that is passed into hash function and generates salt based on it
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete password confirm field
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model('User', userSchema);
