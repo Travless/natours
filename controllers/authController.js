@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -58,18 +59,20 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 1) Get token and check if it's there
   let token;
   if (
+    // read token from aithorization
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  console.log(token);
 
+  // check if token exists
   if (!token) {
     return next(new AppError('You are not logged in. Please log in to get access.', 401))
   }
 
   // 2) Verification token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // Check if user still exists
 
