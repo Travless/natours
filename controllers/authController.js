@@ -16,6 +16,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    passwordChangedAt: req.body.passwordChangedAt,
   });
 
   // token signature requires payload & secret. header is automatuically created, and options are optional
@@ -68,7 +69,9 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // check if token exists
   if (!token) {
-    return next(new AppError('You are not logged in. Please log in to get access.', 401))
+    return next(
+      new AppError('You are not logged in. Please log in to get access.', 401)
+    );
   }
 
   // 2) Verification token
@@ -77,10 +80,18 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Check if user still exists
   const freshUser = await User.findById(decoded.id);
   if (!freshUser) {
-    return next(new AppError('The user belonging to the token no longer exisits.', 401));
+    return next(
+      new AppError('The user belonging to the token no longer exisits.', 401)
+    );
   }
 
   // Check if user changed passwords after the token was issued
+  if (freshUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recently changed password. Please log in again.', 401)
+    );
+  }
 
+  // Grant access to protected route
   next();
 });
