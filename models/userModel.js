@@ -99,6 +99,14 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
+
+    console.log({resetToken}, this.passwordResetToken);
+
+  // this sets the passworrd reset token to expire in 10 minutes (formatted in miliseconds) from whan it's requested 
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  // Plain text token that will be sent via email
+  return resetToken;
 };
 
 const User = mongoose.model('User', userSchema);

@@ -29,9 +29,9 @@ app.use('/api/v1/users', userRouter);
 
 // handler that will catch all requests that aren't caught by the designated tour and user handlers
 // Operational error
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));
-});
+// app.all('*', (req, res, next) => {
+//   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));
+// });
 
 // Error handling middleware
 app.use(globalErrorHAndler);
