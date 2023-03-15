@@ -76,7 +76,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 2) Verification token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
 
   // Check if user still exists
   const freshUser = await User.findById(decoded.id);
@@ -88,6 +87,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // Check if user changed passwords after the token was issued
   if (freshUser.changedPasswordAfter(decoded.iat)) {
+    console.log(decoded);
     return next(
       new AppError('User recently changed password. Please log in again.', 401)
     );
