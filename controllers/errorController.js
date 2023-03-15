@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable node/no-unsupported-features/es-syntax */
 /* eslint-disable prettier/prettier */
