@@ -100,9 +100,9 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest('hex');
 
-    console.log({resetToken}, this.passwordResetToken);
+  console.log({ resetToken }, this.passwordResetToken);
 
-  // this sets the passworrd reset token to expire in 10 minutes (formatted in miliseconds) from whan it's requested 
+  // this sets the passworrd reset token to expire in 10 minutes (formatted in miliseconds) from whan it's requested
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   // Plain text token that will be sent via email

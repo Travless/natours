@@ -9,7 +9,7 @@
 // which makes sure that the error endus up in our global middleware.
 // This is A LOT to wrap my head around, work on familiarizing yourself with this.
 module.exports = fn => {
-    return (req, res, next) => {
-      fn(req, res, next).catch(err => next(err));
-    };
+  return (req, res, next) => {
+    fn(req, res, next).catch(err => next(err));
   };
+};
