@@ -67,6 +67,14 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  // set passwordChangedAt to one sec before so that the token is always generated after the password has been changed in case adding to DB is slowed
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 // check if provided password is the same as encrypted password via instance method
 // instance method is available on all user documents
 userSchema.methods.correctPassword = async function (
