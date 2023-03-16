@@ -23,7 +23,7 @@ const createSendToken = (user, statusCode, res) => {
       user,
     },
   });
-}
+};
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
@@ -37,7 +37,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // token signature requires payload & secret. header is automatuically created, and options are optional
   createSendToken(newUser, 201, res);
-
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -158,7 +157,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-    // find user by token and check if token has expired
+  // find user by token and check if token has expired
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
@@ -179,8 +178,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-
-exports.updatePassword = catchAsync ( async (req, res, next) => {
+exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findOne(req.body.id).select('+password');
   // 2) Check if posted password is correct
