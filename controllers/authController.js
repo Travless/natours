@@ -33,6 +33,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
     role: req.body.role,
+    active: req.body.active,
   });
 
   // token signature requires payload & secret. header is automatuically created, and options are optional
