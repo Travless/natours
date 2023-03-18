@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 // Encryption middleware
@@ -62,7 +67,7 @@ userSchema.pre('save', async function (next) {
   // bycrypt creates hash based on cost parma that is passed into hash function and generates salt based on it
   this.password = await bcrypt.hash(this.password, 12);
 
-  // Delete password confirm field
+  // Delete password confirm fieldS
   this.passwordConfirm = undefined;
   next();
 });
