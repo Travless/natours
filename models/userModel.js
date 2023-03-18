@@ -80,6 +80,12 @@ userSchema.pre('save', function (next) {
   next();
 });
 
+userSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ active: { $ne: false } });
+  next();
+});
+
 // check if provided password is the same as encrypted password via instance method
 // instance method is available on all user documents
 userSchema.methods.correctPassword = async function (
