@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 
+
 const router = express.Router();
 
 // Authentication Routers
@@ -33,3 +34,7 @@ router
   .delete(userController.deleteUser);
 
 module.exports = router;
+
+// POST /tour/234552jbkbkj/reviews
+// GET /tour/234552jbkbkj/reviews
+// GET /tour/234552jbkbkj/reviews/908419034y
