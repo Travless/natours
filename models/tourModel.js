@@ -122,6 +122,16 @@ tourSchema.virtual('durationWeeks').get(function () {
 // Document Middleware w/ Mongoose
 // Hook (.save(), .create(), etc)
 
+// virtual populate
+// connecting the tour and review models with prosisting that data to the DB
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  // name of the field of the review model where the reference to the current (tour) model is stored
+  foreignField: 'tour',
+  // where the above id is stored in the current model (review)
+  localField: '_id',
+});
+
 // Pre-Hook (only runs before .save() and .create())
 tourSchema.pre('save', function (next) {
   // Creates slug for tour schema
