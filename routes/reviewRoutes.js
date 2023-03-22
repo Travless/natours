@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
+// get all of the reviews
 router
   .route('/')
   .get(reviewController.getAllReviews)
@@ -12,5 +13,7 @@ router
     authController.restrictTo('user'),
     reviewController.addNewReview
   );
+
+router.route('/').get(reviewController.)
 
 module.exports = router;

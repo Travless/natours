@@ -6,12 +6,12 @@ const APIFeatures = require('../utils/apiFeatures');
 
 // Get all reviews
 exports.getAllReviews = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Review.find(), req.query);
-    // .filter()
-    // .sort()
-    // .limitFields()
-    // .paginate();
-  const reviews = await features.query;
+  let filter = {};
+  // if request includes a tourId, then set filter to that tourId
+  // If request has no included tourId, filter will remain an empty object and filter will return all reviews for all tours
+  if (req.params.tourId) filter = { tour: req.params.tourId };
+
+  const reviews = await Review.find(filter);
 
   // Send Query
   if (!reviews) {
