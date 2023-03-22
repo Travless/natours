@@ -16,16 +16,33 @@ exports.deleteOne = (Model) =>
     });
   });
 
-// exports.deleteTour = catchAsync(async (req, res, next) => {
-//     // When data is deleted, you don't need to store a response, since there is no response being returned to the client
-//     const tour = await Tour.findByIdAndDelete(req.params.id);
+exports.createOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const newDoc = await Model.create(req.body);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        Model: newDoc,
+      },
+    });
+  });
 
-//     if(!tour) {
-//       return next(new AppError('No tour found with that ID', 404));
-//     }
+// Factory Function for Handling Patch Requests
+exports.updateOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-//     res.status(204).json({
-//       status: 'success',
-//       data: null,
-//     });
-//   });
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: doc,
+      },
+    });
+  });
