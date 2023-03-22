@@ -34,7 +34,3 @@ router
   .delete(userController.deleteUser);
 
 module.exports = router;
-
-// POST /tour/234552jbkbkj/reviews
-// GET /tour/234552jbkbkj/reviews
-// GET /tour/234552jbkbkj/reviews/908419034y
