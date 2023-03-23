@@ -7,10 +7,8 @@ const fs = require('fs');
 const catchAsync = require('./../utils/catchAsync');
 // eslint-disable-next-line no-unused-vars
 const Tour = require('./../models/tourModel');
-
-const APIFeatures = require('./../utils/apiFeatures');
-const AppError = require('../utils/appError');
-
+// const APIFeatures = require('./../utils/apiFeatures');
+// const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 
 exports.aliasTopTours = (req, res, next) => {
@@ -19,54 +17,6 @@ exports.aliasTopTours = (req, res, next) => {
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };
-
-// GET
-// Get list of tour info
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const tours = await features.query;
-
-  // SEND QUERY
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
-
-// Get tour info by id
-exports.getTourById = catchAsync(async (req, res, next) => {
-  // using populate will fill out the field it is passed within the request sent to it
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // Tour.findOne({_id: req.params.id})
-  if(!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-});
-
-// POST
-// Add new tour
-exports.addNewTour = factory.createOne(Tour);
-
-// PATCH
-exports.updateTour = factory.updateOne(Tour);
-
-// DELETE
-exports.deleteTour = factory.deleteOne(Tour);
-
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -145,3 +95,21 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+
+// GET
+// Get list of tour info
+exports.getAllTours = factory.getAll(Tour);
+
+// Get tour info by id
+exports.getTourById = factory.getOne(Tour, { path: 'reviews' });
+
+// POST
+// Add new tour
+exports.addNewTour = factory.createOne(Tour);
+
+// PATCH
+exports.updateTour = factory.updateOne(Tour);
+
+// DELETE
+exports.deleteTour = factory.deleteOne(Tour);
