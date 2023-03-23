@@ -69,7 +69,6 @@ exports.getOne = (Model, popOptions) =>
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
-
     // to allow for nest GET reviews on tour
     let filter = {};
     // if request includes a tourId, then set filter to that tourId
