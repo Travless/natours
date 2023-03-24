@@ -8,8 +8,8 @@ const catchAsync = require('./../utils/catchAsync');
 // eslint-disable-next-line no-unused-vars
 const Tour = require('./../models/tourModel');
 // const APIFeatures = require('./../utils/apiFeatures');
-// const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
+const AppError = require('../utils/appError');
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -17,6 +17,23 @@ exports.aliasTopTours = (req, res, next) => {
   req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
   next();
 };
+
+// GET
+// Get list of tour info
+exports.getAllTours = factory.getAll(Tour);
+
+// Get tour info by id
+exports.getTourById = factory.getOne(Tour, { path: 'reviews' });
+
+// POST
+// Add new tour
+exports.addNewTour = factory.createOne(Tour);
+
+// PATCH
+exports.updateTour = factory.updateOne(Tour);
+
+// DELETE
+exports.deleteTour = factory.deleteOne(Tour);
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
@@ -96,20 +113,22 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   });
 });
 
+// // Geospacial Query Route
+// router.route('/tours-within/:distance/center/:lat,lng/:unit', tourController.getToursWithin);
+// // query strings  /tours-distance?distance=233&center=-40,45&unit=mi
+// //  /tours-distance/233/center/34.111745,-118.113491/unit/mi
 
-// GET
-// Get list of tour info
-exports.getAllTours = factory.getAll(Tour);
+exports.getToursWithin = (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
 
-// Get tour info by id
-exports.getTourById = factory.getOne(Tour, { path: 'reviews' });
+  if (!lat || !lng) {
+    next(new AppError('Please provide latitude and longitude in the format lat,lng.', 400));
+  }
 
-// POST
-// Add new tour
-exports.addNewTour = factory.createOne(Tour);
+  console.log(distance, lat, lng, unit);
 
-// PATCH
-exports.updateTour = factory.updateOne(Tour);
-
-// DELETE
-exports.deleteTour = factory.deleteOne(Tour);
+  res.status(200).json({
+    status: 'success',
+  })
+};

@@ -24,6 +24,13 @@ router
 
 router.route('/tour-stats').get(tourController.getTourStats);
 
+// Geospacial Query Route
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+// query strings  /tours-distance?distance=233&center=-40,45&unit=mi
+//  /yours-distance/233/center/-40,45/unit/mi
+
 router
   .route('/')
   .get(tourController.getAllTours)
