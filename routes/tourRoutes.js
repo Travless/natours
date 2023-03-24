@@ -31,6 +31,8 @@ router
 // query strings  /tours-distance?distance=233&center=-40,45&unit=mi
 //  /yours-distance/233/center/-40,45/unit/mi
 
+router.route('/distance/:latlng/unit/:unit').get(tourController.getDistances);
+
 router
   .route('/')
   .get(tourController.getAllTours)
