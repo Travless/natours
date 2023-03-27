@@ -1,0 +1,33 @@
+.card
+    .card__header
+        .card__picture 
+            .card__picture-overlay &nbsp;
+            img.card__picture-img(src='img/tour-1-cover.jpg' alt='Tour 1')
+        h3.heading-tertirary #{tour}
+    .card__details
+        h4.card__sub-heading
+        p.card-text
+        .card__data
+            svg.card__icon
+                use(xlink:href='img/icons.svg#icon-map-pin')
+            span
+        .card__data
+            svg.card__icon 
+                use(xlink:href='img/icons.svg#icon-calendar')
+            span
+        .card__data
+            svg.card__icon 
+                use(xlink:href='img/icons.svg#icon-flag')
+            span
+        .card__data
+            svg.card__icon 
+                use(xlink:href='img/icons.svg#icon-user')
+            span
+    .card__footer
+        p
+            span.card__footer-value 
+            span.card__footer-text 
+        p.card__ratings
+            span.card__footer-value 
+            span.card__footer-text 
+        a.btn.btn--green.btn--small(href='#')
