@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit= require('express-rate-limit');
@@ -8,7 +9,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 
 
-const AppError = require('./utils/appError');
+// const AppError = require('./utils/appError');
 const globalErrorHAndler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -16,7 +17,13 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1) GLOBAL MIDDLEWARES
+// Serving static files
+app.use(express.static(path.join(__dirname, 'pubkic')));
+
 // Set security HTTP headers
 app.use(helmet());
 
@@ -57,8 +64,6 @@ app.use(
   })
 );
 
-// Serving static files
-app.use(express.static(`${this._router}/public`));
 
 // Test middleware
 app.use((req, res, next) => {
