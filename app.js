@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
-
+const viewRouter = require('./routes/viewRoutes');
 
 // const AppError = require('./utils/appError');
 const globalErrorHAndler = require('./controllers/errorController');
@@ -75,12 +75,18 @@ app.use((req, res, next) => {
 // 2) ROUTES
 
 app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    tour: 'The Forest Hiker',
-    user: 'Travis',
+  res.status(200).render('overview', {
+    title: 'All Tours',
   });
 });
 
+app.get('/tour', (req, res) => {
+  res.status(200).render('tour', {
+    title: 'The Forest Hiker Tour',
+  });
+});
+
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
