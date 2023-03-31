@@ -97,15 +97,15 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // Check if user still exists
-  const freshUser = await User.findById(decoded.id);
-  if (!freshUser) {
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
     return next(
       new AppError('The user belonging to the token no longer exisits.', 401)
     );
   }
 
   // Check if user changed passwords after the token was issued
-  if (freshUser.changedPasswordAfter(decoded.iat)) {
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
     console.log(decoded);
     return next(
       new AppError('User recently changed password. Please log in again.', 401)
@@ -113,7 +113,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // Grant access to protected route
-  req.user = freshUser;
+  req.user = currentUser;
   next();
 });
 
@@ -122,7 +122,7 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt) {
     // 1) Verification token
     const decoded = await promisify(jwt.verify)(
-      req.cookies,
+      req.cookies.jwt,
       process.env.JWT_SECRET
     );
 
@@ -139,7 +139,7 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
 
     // THERE IS A LOGGED IN USER
     res.locals.user = currentUser;
-    next();
+    return next();
   }
   next();
 });
