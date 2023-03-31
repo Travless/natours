@@ -4,7 +4,7 @@ console.log(locations);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidHJhdmxlc3MiLCJhIjoiY2xmdmN1aXF2MDV1cTNwczNyaGt1d2NjOSJ9.TZ3OiFZvnmJF2gCCvC2d6g';
 
-var map = new mapboxgl.Map({
+let map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/travless/clfvf4vph00lm01mxevslngjv',
   scrollZoom: false
