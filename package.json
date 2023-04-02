@@ -7,7 +7,9 @@
     "start:dev": "SET NODE_ENV=development&&nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
     "start": "node server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "watch:js": "parcel watch ./public/js/index.js --dist-dir ./public/js/bundle.js",
+    "build:js": "parcel watch ./public/js/index.js --dist-dir ./public/js/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -48,6 +50,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "ndb": "^1.1.5",
+    "parcel": "^2.8.3",
     "prettier": "^2.8.4"
   }
 }
