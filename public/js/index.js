@@ -2,11 +2,13 @@
 import 'core-js/stable';
 import { displayMap } from './mapbox';
 import { login, logout } from "./login";
+import { updateData } from './updateSettings';
 
 // DOM Elements
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el.nav__el--logout');
+const saveSettings = document.querySelector('.form-user-data');
 
 // Delegation
 if(mapBox){
@@ -25,4 +27,13 @@ if(loginForm){
 
 if(logoutBtn) {
     logoutBtn.addEventListener('click', logout);
+};
+
+if(saveSettings) {
+    saveSettings.addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        updateData(name, email);
+    })
 };
