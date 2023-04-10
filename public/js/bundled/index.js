@@ -1559,6 +1559,7 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", function() {
             switch(_state.label){
                 case 0:
                     e.preventDefault();
+                    document.getElementById("updatePasswordBtn").textContent = "Updating...";
                     passwordCurrent = document.getElementById("password-current").value;
                     password = document.getElementById("password").value;
                     passwordConfirm = document.getElementById("password-confirm").value;
@@ -1572,7 +1573,7 @@ if (userPasswordForm) userPasswordForm.addEventListener("submit", function() {
                     ];
                 case 1:
                     _state.sent();
-                    // document.querySelector('.btn--save-password').textContent = 'Save password';
+                    document.getElementById("updatePasswordBtn").textContent = "Save password";
                     document.getElementById("password-current").value = "";
                     document.getElementById("password").value = "";
                     document.getElementById("password-confirm").value = "";
