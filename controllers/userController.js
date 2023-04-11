@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 const multer = require('multer');
 
+// Multer File Upload
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/img/users');
@@ -12,7 +13,7 @@ const multerStorage = multer.diskStorage({
     // filename will be constructer of: user-userId-currentTimeStamp.fileextension
     // user-7986586abc809789bv-33976556.jpeg
     const ext = file.mimetype.split('/')[1];
-    cb(null, `user-${req.user.id}-${Date.now()}.${etx}`);
+    cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
   }
 });
 
@@ -24,9 +25,15 @@ const multerFilter = (req, file, cb) => {
   }
 }
 
-const upload = multer({ dest: 'public/img/users' });
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
 
 exports.uploadUserPhoto = upload.single('photo');
+
+
+
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
