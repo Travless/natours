@@ -1531,6 +1531,7 @@ var loginForm = document.querySelector(".form--login");
 var logOutBtn = document.querySelector(".nav__el--logout");
 var userDataForm = document.querySelector(".form-user-data");
 var userPasswordForm = document.querySelector(".form-user-settings");
+var selectNewPhoto = document.querySelector(".btn-text");
 // DELEGATION
 if (mapBox) {
     var locations = JSON.parse(mapBox.dataset.locations);
@@ -1545,12 +1546,12 @@ if (loginForm) loginForm.addEventListener("submit", function(e) {
 if (logOutBtn) logOutBtn.addEventListener("click", (0, _login.logout));
 if (userDataForm) userDataForm.addEventListener("submit", function(e) {
     e.preventDefault();
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    (0, _updateSettings.updateSettings)({
-        name: name,
-        email: email
-    }, "data");
+    var form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    console.log(form);
+    (0, _updateSettings.updateSettings)(form, "data");
 });
 if (userPasswordForm) userPasswordForm.addEventListener("submit", function() {
     var _ref = (0, _asyncToGeneratorMjsDefault.default)(function(e) {
