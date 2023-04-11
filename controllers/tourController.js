@@ -38,10 +38,22 @@ exports.uploadTourImages = upload.fields([
 // use upload.single when it is a single file upload, req.file
 // use upload.array when uploading multiple files of the same name, req.files
 
-exports.resizeTourImages = (req, res, next) => {
+exports.resizeTourImages = catchAsync (async (req, res, next) => {
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  // 1) Cover image
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
   console.log(req.files);
+  await sharp(req.file.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/tours/${imageCoverFileName}`);
+
+  // 2) Images
+
   next();
-}
+});
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
