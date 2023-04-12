@@ -61,7 +61,6 @@ app.use(
         formAction: ["'self'"],
         connectSrc: [
           "'self'",
-          "'unsafe-inline'",
           'data:',
           'blob:',
           'https://*.stripe.com',
@@ -71,7 +70,7 @@ app.use(
           'ws://127.0.0.1:*/',
  
         ],
-        upgradeInsecureRequests: [],
+        upgradeInsecureRequests: true,
       },
     },
   })
