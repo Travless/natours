@@ -5,9 +5,7 @@
 // eslint-disable-next-line no-unused-vars
 const fs = require('fs');
 const catchAsync = require('./../utils/catchAsync');
-// eslint-disable-next-line no-unused-vars
 const Tour = require('./../models/tourModel');
-// const APIFeatures = require('./../utils/apiFeatures');
 const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
 const multer = require('multer');
